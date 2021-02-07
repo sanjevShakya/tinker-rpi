@@ -27,16 +27,22 @@ def when_motion():
 def when_no_motion():
     print('No motion available')
 
+with button.when_pressed as b_press:
+    b_press = button_pressed
 
-def button_motion_handling():
-    pwm_led.source = lightSensor
-    print('Light Sensor value', lightSensor.value)
-    print('Pot Value', pot.value)
-    button.when_pressed = button_pressed
-    button.when_released = button_released
-    pir.when_motion = when_motion
-    pir.when_no_motion = when_no_motion
-    pause()
+with button.when_released as b_release:
+    b_release = button_released
+
+
+# def button_motion_handling():
+#     pwm_led.source = lightSensor
+#     print('Light Sensor value', lightSensor.value)
+#     print('Pot Value', pot.value)
+#     button.when_pressed = button_pressed
+#     button.when_released = button_released
+#     pir.when_motion = when_motion
+#     pir.when_no_motion = when_no_motion
+#     pause()
 
 
 # def main_loop():
@@ -46,4 +52,4 @@ def button_motion_handling():
 #             print('Pot value changed', pot.value)
 #             current_pot_value = pot.value
 
-button_motion_handling()
+# button_motion_handling()
