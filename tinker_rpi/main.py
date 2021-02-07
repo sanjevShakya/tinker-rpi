@@ -1,5 +1,6 @@
 from gpiozero import LED, PWMLED, Button, Buzzer, MotionSensor, LightSensor, MCP3008
 from signal import pause
+from threading import Thread
 
 led = LED(17)
 pwm_led = PWMLED(21)
@@ -27,29 +28,35 @@ def when_motion():
 def when_no_motion():
     print('No motion available')
 
-with button.when_pressed as b_press:
-    b_press = button_pressed
-
-with button.when_released as b_release:
-    b_release = button_released
-
-
-# def button_motion_handling():
-#     pwm_led.source = lightSensor
-#     print('Light Sensor value', lightSensor.value)
-#     print('Pot Value', pot.value)
-#     button.when_pressed = button_pressed
-#     button.when_released = button_released
-#     pir.when_motion = when_motion
-#     pir.when_no_motion = when_no_motion
-#     pause()
+def button_motion_handling():
+    pwm_led.source = lightSensor
+    print('Light Sensor value', lightSensor.value)
+    print('Pot Value', pot.value)
+    button.when_pressed = button_pressed
+    button.when_released = button_released
+    pir.when_motion = when_motion
+    pir.when_no_motion = when_no_motion
+    pause()
 
 
-# def main_loop():
-#     current_pot_value = pot.value
-#     while True:
-#         if(current_pot_value != pot.value):
-#             print('Pot value changed', pot.value)
-#             current_pot_value = pot.value
+def main_loop():
+    current_pot_value = pot.value
+    while True:
+        if(current_pot_value != pot.value):
+            print('Pot value changed', pot.value)
+            current_pot_value = pot.value
+
+t1 = Thread(target=button_motion_handling)
+threads = [t1]
+t2 = Thread(target=main_loop)
+threads += [t2]
+
+t1.start()
+t2.start()
+
+for tloop in threads:
+    tloop.join()
+
+
 
 # button_motion_handling()
