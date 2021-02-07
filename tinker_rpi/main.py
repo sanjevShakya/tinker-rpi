@@ -1,6 +1,7 @@
 from gpiozero import LED, PWMLED, Button, Buzzer, MotionSensor, LightSensor, MCP3008
 from signal import pause
 from threading import Thread
+from time import sleep
 
 led = LED(17)
 pwm_led = PWMLED(21)
@@ -45,6 +46,7 @@ def main_loop():
         if(current_pot_value != pot.value):
             print('Pot value changed', pot.value)
             current_pot_value = pot.value
+            sleep(.5)
 
 t1 = Thread(target=button_motion_handling)
 threads = [t1]
