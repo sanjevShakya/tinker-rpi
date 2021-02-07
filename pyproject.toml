@@ -15,6 +15,7 @@ tinker_rpi="tinker_rpi.main:main"
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 pylint = "^2.6.0"
+autopep8 = "^1.5.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
