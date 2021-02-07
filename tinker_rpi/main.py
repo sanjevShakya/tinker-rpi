@@ -1,6 +1,5 @@
 from gpiozero import LED, PWMLED, Button, Buzzer, MotionSensor, LightSensor, MCP3008
 from signal import pause
-import _thread
 
 led = LED(17)
 pwm_led = PWMLED(21)
@@ -40,19 +39,11 @@ def button_motion_handling():
     pause()
 
 
-def main_loop():
-    current_pot_value = pot.value
-    while True:
-        if(current_pot_value != pot.value):
-            print('Pot value changed', pot.value)
-            current_pot_value = pot.value
+# def main_loop():
+#     current_pot_value = pot.value
+#     while True:
+#         if(current_pot_value != pot.value):
+#             print('Pot value changed', pot.value)
+#             current_pot_value = pot.value
 
-
-try:
-    _thread.start_new_thread(main_loop)
-    _thread.start_new_thread(button_motion_handling)
-except:
-    print("Error: Unable to start thread")
-
-while 1:
-    pass
+button_motion_handling()
