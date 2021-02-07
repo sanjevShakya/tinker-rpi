@@ -1,4 +1,4 @@
-from gpiozero import LED, PWMLED, Button, Buzzer, MotionSensor, LightSensor
+from gpiozero import LED, PWMLED, Button, Buzzer, MotionSensor, LightSensor, MCP3008
 from signal import pause
 
 led = LED(17)
@@ -7,6 +7,7 @@ button = Button(2)
 buzzer = Buzzer(26)
 pir = MotionSensor(19)
 lightSensor = LightSensor(13)
+pot = MCP3008(channel=0)
 
 def button_pressed():
     led.on()
@@ -24,8 +25,9 @@ def when_no_motion():
     print('No motion available')
 
 print('Light Sensor value', lightSensor.value);
-
+print('Pot Value', pot.value);
 pwm_led.source = lightSensor
+
 
 button.when_pressed = button_pressed
 button.when_released = button_released
