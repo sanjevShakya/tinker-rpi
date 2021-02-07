@@ -25,7 +25,7 @@ def when_no_motion():
 
 print('Light Sensor value', lightSensor.value);
 
-led.source = lightSensor
+pwm_led.source = lightSensor
 
 button.when_pressed = button_pressed
 button.when_released = button_released
