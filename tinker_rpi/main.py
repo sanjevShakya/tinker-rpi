@@ -59,16 +59,19 @@ def surveillance():
     return 2
 
 def alarm():
+    print("Alarm Mode")
     buzzer.on()
     sleep(0.2)
     buzzer.off()
     for led in leds:
         led.on()
-        sleep(0.2)
+    sleep(0.2)
     
     for led in leds:
         led.off()
-        sleep(0.2)
+    sleep(0.2)
+    if button.is_pressed:
+        return 1
     return 3
 
 
