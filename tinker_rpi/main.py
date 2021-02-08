@@ -1,9 +1,10 @@
-from gpiozero import LED, Buzzer, LightSensor, Button
+from gpiozero import LED, Buzzer, LightSensor, Button, MotionSensor
 # , PWMLED, Button, Buzzer, MotionSensor, LightSensor, MCP3008
 # from signal import pause
 from time import sleep
 
 led_pin_outs = [21, 20, 16, 12]
+pir = MotionSensor(19)
 
 
 def initialize_leds():
@@ -43,85 +44,46 @@ def start():
     return 1
 
 
-def ready():
+def surveillance():
+    print('Surveillance Active')
+    motion_count = 0
     for led in leds:
         led.on()
         sleep(0.2)
         led.off()
         sleep(0.2)
+    if pir.motion_detected:
+        motion_count = motion_count + 1
+        if(motion_count > 5):
+            return 3
     return 2
 
-
-def surveillance():
-    return True
-
-
 def alarm():
-    return True
+    buzzer.on()
+    sleep(0.2)
+    buzzer.off()
+    for led in leds:
+        led.on()
+        sleep(0.2)
+    
+    for led in leds:
+        led.off()
+        sleep(0.2)
+    return 3
 
-current_state = 1
 
 def main():
+    current_state = 1
+
     while True:
-        current_state = 1;
+        current_state = 1
         if(current_state == 1):
             next_state = start()
             current_state = next_state
         if(current_state == 2):
             next_state = surveillance()
             current_state = next_state
-        # if not state_1:
-        #
-
-        # led = LED(17)
-        # pwm_led = PWMLED(21)
-        # button = Button(2)
-        # buzzer = Buzzer(26)
-        # pir = MotionSensor(19)
-        # lightSensor = LightSensor(13)
-        # pot = MCP3008(channel=0)
-
-        # def button_pressed():
-        #     led.on()
-        #     buzzer.on()
-
-        # def button_released():
-        #     led.off()
-        #     buzzer.off()
-
-        # def when_motion():
-        #     print('Motion detected')
-
-        # def when_no_motion():
-        #     print('No motion available')
-
-        # def button_motion_handling():
-        #     pwm_led.source = lightSensor
-        #     print('Light Sensor value', lightSensor.value)
-        #     print('Pot Value', pot.value)
-        #     button.when_pressed = button_pressed
-        #     button.when_released = button_released
-        #     pir.when_motion = when_motion
-        #     pir.when_no_motion = when_no_motion
-        #     pause()
-
-        # def main_loop():
-        #     current_pot_value = pot.value
-        #     while True:
-        #         if(current_pot_value != pot.value):
-        #             print('Pot value changed', pot.value)
-        #             current_pot_value = pot.value
-        #             sleep(.5)
-
-        # t1 = Thread(target=button_motion_handling)
-        # threads = [t1]
-        # t2 = Thread(target=main_loop)
-        # threads += [t2]
-
-        # t1.start()
-        # t2.start()
-
-        # for tloop in threads:
-        #     tloop.join()
-
-        # button_motion_handling()
+        if(current_state == 3):
+            next_state = alarm()
+            current_state = next_state
+    
