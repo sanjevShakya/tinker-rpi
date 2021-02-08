@@ -16,7 +16,7 @@ def initialize_leds():
 leds = initialize_leds()
 buzzer = Buzzer(26)
 light_sensor = LightSensor(13)
-button = Button(2)
+button = Button(2, hold_time=2)
 
 
 def led_dark_condition():
@@ -33,14 +33,13 @@ def led_light_condition():
 
 def start():
     buzzer.off()
+    if(button.is_held):
+        return True
     light_sensor.wait_for_light()
     led_light_condition()
     light_sensor.wait_for_dark()
     led_dark_condition()
     print("Press and Hold 2sec for to enter Surveillance Mode")
-    button.wait_for_press(2)
-    if(button.is_pressed and button.pressed_time >= 2):
-        return True
     return False
 
 
