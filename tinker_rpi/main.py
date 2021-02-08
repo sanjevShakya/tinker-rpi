@@ -43,20 +43,16 @@ def start():
             return 2
     return 1
 
-motion_count = 0
-def surveillance():
+def surveillance(motion_count):
     print('Surveillance Active')
-    global motion_count
     for led in leds:
         led.on()
         sleep(0.2)
         led.off()
         sleep(0.2)
     if pir.motion_detected:
-        motion_count = motion_count + 1
-        if(motion_count > 2):
-            return 3
-    return 2
+        return increment(motion_count)
+    return motion_count
 
 def alarm():
     print("Alarm Mode")
@@ -74,16 +70,24 @@ def alarm():
         return 1
     return 3
 
+def increment(count):
+    count = count +1;
+    return count
 
 def main():
     current_state = 1
+    motion_count = 0
 
     while True:
         if(current_state == 1):
             next_state = start()
             current_state = next_state
         if(current_state == 2):
-            next_state = surveillance()
+            motion_count = surveillance(motion_count)
+            if(motion_count > 2):
+                next_state = 3
+            else:
+                next_state = 2
             current_state = next_state
         if(current_state == 3):
             next_state = alarm()
