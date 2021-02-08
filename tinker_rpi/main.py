@@ -1,11 +1,13 @@
+from tinker_rpi.timer import Timer
 from gpiozero import LED, Buzzer, LightSensor, Button, MotionSensor
 # , PWMLED, Button, Buzzer, MotionSensor, LightSensor, MCP3008
 # from signal import pause
 from time import sleep
 
+
 led_pin_outs = [21, 20, 16, 12]
 pir = MotionSensor(19)
-
+pir_timer = Timer()
 
 def initialize_leds():
     leds = []
@@ -40,8 +42,10 @@ def start():
         led_dark_condition()
         print("Press and Hold 2sec for to enter Surveillance Mode")
         if(button.is_held):
+            pir_timer.start_time()
             return 2
     return 1
+
 
 def surveillance(motion_count):
     print('Surveillance Active')
@@ -51,8 +55,10 @@ def surveillance(motion_count):
         led.off()
         sleep(0.2)
     if pir.motion_detected:
+        print("Time ellapsed", pir_timer.get_ellapsed_time())
         return increment(motion_count)
     return motion_count
+
 
 def alarm():
     print("Alarm Mode")
@@ -62,7 +68,7 @@ def alarm():
     for led in leds:
         led.on()
     sleep(0.2)
-    
+
     for led in leds:
         led.off()
     sleep(0.2)
@@ -70,14 +76,15 @@ def alarm():
         return 1
     return 3
 
+
 def increment(count):
-    count = count +1;
+    count = count + 1
     return count
+
 
 def main():
     current_state = 1
     motion_count = 0
-
     while True:
         if(current_state == 1):
             next_state = start()
@@ -92,4 +99,3 @@ def main():
         if(current_state == 3):
             next_state = alarm()
             current_state = next_state
-    
