@@ -33,14 +33,14 @@ def led_light_condition():
 
 def start():
     buzzer.off()
-    if(button.is_held):
-        return True
-    light_sensor.wait_for_light()
-    led_light_condition()
-    light_sensor.wait_for_dark()
-    led_dark_condition()
-    print("Press and Hold 2sec for to enter Surveillance Mode")
-    return False
+    if(light_sensor.light_detected):
+        led_light_condition()
+    else:
+        led_dark_condition()
+        print("Press and Hold 2sec for to enter Surveillance Mode")
+        if(button.is_held):
+            return False
+    return True
 
 
 def ready():
@@ -58,7 +58,8 @@ def alarm():
 def main():
     while True:
         state_1 = start()
-        print('Entering state 2')
+        if not state_1:
+            print('Entering state 2')
         # if not state_1:
         #
 
