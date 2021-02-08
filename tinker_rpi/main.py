@@ -1,38 +1,55 @@
-from gpiozero import LED
+from gpiozero import LED, Buzzer, LightSensor
 # , PWMLED, Button, Buzzer, MotionSensor, LightSensor, MCP3008
 # from signal import pause
 from time import sleep
 
-led_pin_outs = [21,20,16, 12]
-
-def start():
-    return True;
-
-def ready():
-    return True;
-
-def surveillance():
-    return True;
-
-def alarm():
-    return True;
+led_pin_outs = [21, 20, 16, 12]
 
 def initialize_leds():
-    leds = [];
+    leds = []
     for led_pin in led_pin_outs:
-        leds.push(LED(led_pin))
-
+        leds.append(LED(led_pin))
     return leds
 
-def loop():
-    leds = initialize_leds();
-    while True:
-        for led in leds:
-            led.on()
-            sleep(.2)
-            led.off()
-            sleep(.2)
+leds = initialize_leds();
+buzzer = Buzzer(26)
+light_sensor = LightSensor(13)
 
+
+def led_dark_condition():
+    for led in leds:
+        led.on()
+
+def led_light_condition():
+    leds[0].on()
+    leds[1].off()
+    leds[2].off()
+    leds[3].on()
+
+def start():
+    buzzer.off()
+    light_sensor.wait_for_light()
+    led_light_condition()
+    light_sensor.wait_for_dark()
+    led_dark_condition()
+    return True
+
+
+def ready():
+    return True
+
+
+def surveillance():
+    return True
+
+
+def alarm():
+    return True
+
+
+def main():
+    while True:
+        start()
 
 # led = LED(17)
 # pwm_led = PWMLED(21)
@@ -89,7 +106,6 @@ def loop():
 
 # for tloop in threads:
 #     tloop.join()
-
 
 
 # button_motion_handling()
