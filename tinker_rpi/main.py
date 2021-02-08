@@ -39,7 +39,8 @@ def start():
     led_dark_condition()
     print("Press and Hold 2sec for to enter Surveillance Mode")
     button.wait_for_press(2)
-    print("Entering Surveillance Mode")
+    if(button.is_pressed and button.pressed_time >= 2):
+        return True
     return False
 
 
@@ -58,58 +59,59 @@ def alarm():
 def main():
     while True:
         state_1 = start()
-        if not state_1:
-            print('Entering state 2')
+        print('Entering state 2')
+        # if not state_1:
+        #
 
-            # led = LED(17)
-            # pwm_led = PWMLED(21)
-            # button = Button(2)
-            # buzzer = Buzzer(26)
-            # pir = MotionSensor(19)
-            # lightSensor = LightSensor(13)
-            # pot = MCP3008(channel=0)
+        # led = LED(17)
+        # pwm_led = PWMLED(21)
+        # button = Button(2)
+        # buzzer = Buzzer(26)
+        # pir = MotionSensor(19)
+        # lightSensor = LightSensor(13)
+        # pot = MCP3008(channel=0)
 
-            # def button_pressed():
-            #     led.on()
-            #     buzzer.on()
+        # def button_pressed():
+        #     led.on()
+        #     buzzer.on()
 
-            # def button_released():
-            #     led.off()
-            #     buzzer.off()
+        # def button_released():
+        #     led.off()
+        #     buzzer.off()
 
-            # def when_motion():
-            #     print('Motion detected')
+        # def when_motion():
+        #     print('Motion detected')
 
-            # def when_no_motion():
-            #     print('No motion available')
+        # def when_no_motion():
+        #     print('No motion available')
 
-            # def button_motion_handling():
-            #     pwm_led.source = lightSensor
-            #     print('Light Sensor value', lightSensor.value)
-            #     print('Pot Value', pot.value)
-            #     button.when_pressed = button_pressed
-            #     button.when_released = button_released
-            #     pir.when_motion = when_motion
-            #     pir.when_no_motion = when_no_motion
-            #     pause()
+        # def button_motion_handling():
+        #     pwm_led.source = lightSensor
+        #     print('Light Sensor value', lightSensor.value)
+        #     print('Pot Value', pot.value)
+        #     button.when_pressed = button_pressed
+        #     button.when_released = button_released
+        #     pir.when_motion = when_motion
+        #     pir.when_no_motion = when_no_motion
+        #     pause()
 
-            # def main_loop():
-            #     current_pot_value = pot.value
-            #     while True:
-            #         if(current_pot_value != pot.value):
-            #             print('Pot value changed', pot.value)
-            #             current_pot_value = pot.value
-            #             sleep(.5)
+        # def main_loop():
+        #     current_pot_value = pot.value
+        #     while True:
+        #         if(current_pot_value != pot.value):
+        #             print('Pot value changed', pot.value)
+        #             current_pot_value = pot.value
+        #             sleep(.5)
 
-            # t1 = Thread(target=button_motion_handling)
-            # threads = [t1]
-            # t2 = Thread(target=main_loop)
-            # threads += [t2]
+        # t1 = Thread(target=button_motion_handling)
+        # threads = [t1]
+        # t2 = Thread(target=main_loop)
+        # threads += [t2]
 
-            # t1.start()
-            # t2.start()
+        # t1.start()
+        # t2.start()
 
-            # for tloop in threads:
-            #     tloop.join()
+        # for tloop in threads:
+        #     tloop.join()
 
-            # button_motion_handling()
+        # button_motion_handling()
