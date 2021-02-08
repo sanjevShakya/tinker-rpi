@@ -38,11 +38,8 @@ def start():
     light_sensor.wait_for_dark()
     led_dark_condition()
     print("Press and Hold 2sec for to enter Surveillance Mode")
-    if button.is_pressed:
-        sleep(2)
-        if button.is_pressed:
-            print("Entering Surveillance Mode")
-            return True
+    button.wait_for_press(2)
+    print("Entering Surveillance Mode")
     return False
 
 
