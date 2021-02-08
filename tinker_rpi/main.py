@@ -39,12 +39,17 @@ def start():
         led_dark_condition()
         print("Press and Hold 2sec for to enter Surveillance Mode")
         if(button.is_held):
-            return False
-    return True
+            return 2
+    return 1
 
 
 def ready():
-    return True
+    for led in leds:
+        led.on()
+        sleep(0.2)
+        led.off()
+        sleep(0.2)
+    return 2
 
 
 def surveillance():
@@ -54,12 +59,17 @@ def surveillance():
 def alarm():
     return True
 
+current_state = 1
 
 def main():
     while True:
-        state_1 = start()
-        if not state_1:
-            print('Entering state 2')
+        current_state = 1;
+        if(current_state == 1):
+            next_state = start()
+            current_state = next_state
+        if(current_state == 2):
+            next_state = surveillance()
+            current_state = next_state
         # if not state_1:
         #
 
