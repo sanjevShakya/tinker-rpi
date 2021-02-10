@@ -94,6 +94,7 @@ def main():
             motion_count = surveillance(motion_count)
             if pir_timer.get_ellapsed_time() <= 15 and motion_count >=2:
                 next_state = 3
+                pir_timer.stop()
                 current_state = next_state
             elif pir_timer.get_ellapsed_time() > 15 and motion_count < 2:
                 pir_timer.restart()
