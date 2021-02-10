@@ -42,7 +42,7 @@ def start():
         led_dark_condition()
         print("Press and Hold 2sec for to enter Surveillance Mode")
         if(button.is_held):
-            pir_timer.start_time()
+            pir_timer.start()
             return 2
     return 1
 
@@ -65,6 +65,7 @@ def alarm():
     buzzer.on()
     sleep(0.2)
     buzzer.off()
+    sleep(0.2)
     for led in leds:
         led.on()
     sleep(0.2)
@@ -91,11 +92,11 @@ def main():
             current_state = next_state
         if(current_state == 2):
             motion_count = surveillance(motion_count)
-            if(motion_count > 2):
+            if pir_timer.get_ellapsed_time() <= 15 and motion_count >=2:
                 next_state = 3
-            else:
-                next_state = 2
-            current_state = next_state
+                current_state = next_state
+            elif pir_timer.get_ellapsed_time() > 15 and motion_count < 2:
+                pir_timer.restart()
         if(current_state == 3):
             next_state = alarm()
             current_state = next_state
