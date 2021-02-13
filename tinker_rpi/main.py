@@ -39,7 +39,7 @@ def y(m, x, c):
     return m * x + c;
 
 def mapPotValueToSeconds(pot_value):
-    time = y(1, pot_value, 2)
+    time = y(-1.8, pot_value, 2)
     return time;
 
 
