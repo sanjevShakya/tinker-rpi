@@ -35,14 +35,19 @@ def led_light_condition():
     leds[2].off()
     leds[3].on()
 
+def y(m, x, c):
+    return m * x + c;
+
 def mapPotValueToSeconds(pot_value):
-    return pot_value
+    time = y(1, pot_value, 2)
+    return time;
+
 
 def start():
     buzzer.off()
     if(light_sensor.light_detected):
-        print("Dial potentiometer to select interval of button");
-        print("pot Value", pot.value)
+        print("Dial potentiometer to select interval of button")
+        print("pot Value", mapPotValueToSeconds(pot.value))
         led_light_condition()
     else:
         led_dark_condition()
