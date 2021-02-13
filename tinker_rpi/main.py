@@ -35,26 +35,30 @@ def led_light_condition():
     leds[2].off()
     leds[3].on()
 
+
 def y(m, x, c):
-    return m * x + c;
+    return m * x + c
+
 
 def mapPotValueToSeconds(pot_value):
     if not pot_value:
-        return 2;
-    time = y(-1.8, pot_value, 2)
-    return time;
+        return 2
+    time = round(y(-1.8, pot_value, 2), 1)
+    return time
 
 
 def start():
     buzzer.off()
+    button_press_lenght = 2
     if(light_sensor.light_detected):
         print("Dial potentiometer to select interval of button")
-        button_press_lenght = mapPotValueToSeconds(pot.value);
-        button.hold_time = button_press_lenght;
+        button_press_lenght = mapPotValueToSeconds(pot.value)
+        button.hold_time = button_press_lenght
         led_light_condition()
     else:
         led_dark_condition()
-        print("Press and Hold 2sec for to enter Surveillance Mode")
+        print("Press and Hold {} sec for to enter Surveillance Mode".format(
+            button_press_lenght))
         if(button.is_held):
             pir_timer.start()
             return 2
