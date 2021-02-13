@@ -28,7 +28,7 @@ def main():
     ledUtil = LEDUtil(LED_PIN_OUTS)
     current_state = states["READY"]
     light_sensor = LightSensor(LIGHT_SENSOR_PIN)
-    button_press_lenght = DEFAULT_BTN_HOLD_TIME
+    button_press_length = DEFAULT_BTN_HOLD_TIME
     button = Button(BUTTON_PIN, hold_time=DEFAULT_BTN_HOLD_TIME)
 
     def alarm():
@@ -58,13 +58,13 @@ def main():
         buzzer.off()
         if(light_sensor.light_detected):
             print("Dial potentiometer to select interval of button")
-            button_press_lenght = map_pot_value_to_seconds(pot.value)
-            button.hold_time = button_press_lenght
+            button_press_length = map_pot_value_to_seconds(pot.value)
+            button.hold_time = button_press_length
             ledUtil.led_ready_light_sequence()
         else:
             ledUtil.led_ready_dark_sequence()
             print("Press and Hold {} sec for to enter Surveillance Mode".format(
-                button_press_lenght))
+                button_press_length))
             if(button.is_held):
                 pir_timer.start()
                 return states["SURVEILLANCE"]
