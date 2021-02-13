@@ -1,5 +1,5 @@
 from tinker_rpi.timer import Timer
-from gpiozero import LED, Buzzer, LightSensor, Button, MotionSensor
+from gpiozero import LED, Buzzer, LightSensor, Button, MotionSensor, MCP3008
 # , PWMLED, Button, Buzzer, MotionSensor, LightSensor, MCP3008
 # from signal import pause
 from time import sleep
@@ -8,6 +8,8 @@ from time import sleep
 led_pin_outs = [21, 20, 16, 12]
 pir = MotionSensor(19)
 pir_timer = Timer()
+pot = MCP3008(channel=0)
+
 
 def initialize_leds():
     leds = []
@@ -33,10 +35,14 @@ def led_light_condition():
     leds[2].off()
     leds[3].on()
 
+def mapPotValueToSeconds(pot_value):
+    return pot_value
 
 def start():
     buzzer.off()
     if(light_sensor.light_detected):
+        print("Dial potentiometer to select interval of button");
+        print("pot Value", pot.value)
         led_light_condition()
     else:
         led_dark_condition()
@@ -92,12 +98,14 @@ def main():
             current_state = next_state
         if(current_state == 2):
             motion_count = surveillance(motion_count)
-            if pir_timer.get_ellapsed_time() <= 15 and motion_count >=2:
+            if pir_timer.get_ellapsed_time() <= 15 and motion_count >= 2:
+                motion_count = 0
                 next_state = 3
                 pir_timer.stop()
                 current_state = next_state
             elif pir_timer.get_ellapsed_time() > 15 and motion_count < 2:
                 pir_timer.restart()
+                motion_count = 0
         if(current_state == 3):
             next_state = alarm()
             current_state = next_state
