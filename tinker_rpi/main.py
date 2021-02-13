@@ -3,7 +3,7 @@ from tinker_rpi.timer import Timer
 from tinker_rpi.led_util import LEDUtil
 from gpiozero import Buzzer, LightSensor, Button, MotionSensor, MCP3008
 from tinker_rpi.utils import turn_buzzer, map_pot_value_to_seconds
-from tinker_rpi.constants import ALARM, READY, SURVEILLANCE, states, LED_PIN_OUTS, MOTION_SENSOR_PIN, BUZZER_PIN, LIGHT_SENSOR_PIN, DEFAULT_BTN_HOLD_TIME, BUTTON_PIN
+from tinker_rpi.constants import ALARM, READY, SURVEILLANCE, MOTION_DETECT_COUNT, MOTION_DETECT_PERIOD, states, LED_PIN_OUTS, MOTION_SENSOR_PIN, BUZZER_PIN, LIGHT_SENSOR_PIN, DEFAULT_BTN_HOLD_TIME, BUTTON_PIN
 
 pir_timer = Timer()
 pot = MCP3008(channel=0)
@@ -56,11 +56,11 @@ def main():
         if pir.motion_detected:
             print("Time ellapsed", pir_timer.get_ellapsed_time())
             motion_count = motion_count + 1
-        if pir_timer.get_ellapsed_time() <= 15 and motion_count >= 2:
+        if pir_timer.get_ellapsed_time() <= MOTION_DETECT_PERIOD and motion_count >= MOTION_DETECT_COUNT:
             motion_count = 0
             pir_timer.stop()
             return states.get(ALARM)
-        elif pir_timer.get_ellapsed_time() > 15 and motion_count < 2:
+        elif pir_timer.get_ellapsed_time() > MOTION_DETECT_PERIOD and motion_count < MOTION_DETECT_COUNT:
             pir_timer.restart()
             motion_count = 0
         return states.get(SURVEILLANCE)
