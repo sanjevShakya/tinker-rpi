@@ -40,6 +40,7 @@ def main():
         return states["ALARM"]
 
     def surveillance():
+        nonlocal motion_count
         print('Surveillance Active')
         ledUtil.led_surveillance_sequence()
         if pir.motion_detected:
@@ -55,6 +56,7 @@ def main():
         return states["SURVEILLANCE"]
 
     def ready():
+        nonlocal button_press_length
         buzzer.off()
         if(light_sensor.light_detected):
             print("Dial potentiometer to select interval of button")
